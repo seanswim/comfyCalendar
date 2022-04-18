@@ -10,8 +10,7 @@ export const CalendarContainer = styled.div`
   margin: 1rem;
   box-shadow: 2px 2px 5px grey;
 
-  width: 500px;
-  height: 500px;
+  width: 60%;
 `;
 
 export const MonthYearContainer = styled.div`
@@ -30,9 +29,19 @@ export const YearContainer = styled.div`
 export const MonthContainer = styled.div`
   font-size: 3em;
   font-weight: 500;
+
+  ::selection {
+    color: none;
+    background: none;
+  }
 `;
 
 export const Table = styled.div`
+`;
+
+export const Row = styled.div`
+  display: flex;
+  justify-content: space-around;
 `;
 
 export const Arrow = styled.span`
