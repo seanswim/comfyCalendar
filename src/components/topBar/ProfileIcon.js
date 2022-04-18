@@ -6,7 +6,10 @@ import SignIn from "./signIn/SignIn";
 const ProfileIcon = () => {
 
   const [openModal, setOpenModal] = useState(false);
-  const openSginInModal = () => setOpenModal(!openModal);
+  const openSginInModal = (event) => {
+    setOpenModal(!openModal);
+    if (event) event.stopPropagation();
+  }
 
   return (
     <ProfileIconContainer>

@@ -1,10 +1,10 @@
 import { TopBarContainer } from "../../styles/topBarStyles/TopBarStyles";
-import UserIcon from "./ProfileIcon";
+import ProfileIcon from "./ProfileIcon";
 
 const TopBar = () => {
   return (
     <TopBarContainer>
-      <UserIcon />
+      <ProfileIcon />
     </TopBarContainer>
   )
 }
