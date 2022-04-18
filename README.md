@@ -1,6 +1,6 @@
 # 🙌🏻 Comfy Calendar
 
-Hello~ Welcome to Comfy Calndar
+Hello~ Welcome to Comfy Calendar
 
 ## ✨ Feature
 

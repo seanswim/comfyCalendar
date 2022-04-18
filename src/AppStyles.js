@@ -2,12 +2,14 @@ import styled from "styled-components";
 
 export const AppContainer = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 
 export const Header = styled.div`
-  flex: 15 1 10%;
 `;
 
 export const Body = styled.div`
-  flex: 85 1 50%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
