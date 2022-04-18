@@ -11,6 +11,7 @@ export const CalendarContainer = styled.div`
   box-shadow: 2px 2px 5px grey;
 
   width: 60%;
+
 `;
 
 export const MonthYearContainer = styled.div`
