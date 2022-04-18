@@ -1,8 +1,9 @@
 import { DateCellContainer } from "../../styles/calendarStyles/DateCellStyles";
 
-const DateCell = ({ day }) => {
+const DateCell = ({ day, isThisMonth, isToday }) => {
+
   return (
-    <DateCellContainer>
+    <DateCellContainer isThisMonth={isThisMonth} isToday={isToday}>
       {day}
     </DateCellContainer>
   )

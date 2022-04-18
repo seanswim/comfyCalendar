@@ -1,16 +1,17 @@
 import styled from "styled-components";
 
 export const DateCellContainer = styled.span`
-  background-color: beige;
+  background-color: ${props => props.isToday ? 'lightblue' : 'beige'};
   border-radius: 15px;
   width: 100%;
   height: 5rem;
   margin: 1rem;
-  cursor: pointer;
+  opacity: ${props => props.isThisMonth ? '1' : '0.5'};
   
-  transition: all 0.4s ease-in-out;
+  cursor: ${props => props.isThisMonth ? 'pointer' : ''};
+  transition: all 0.4s ease-in-out;  
   :hover {
-    transform: scale(1.5);
-    box-shadow: 2px 2px 5px grey;
+    transform: ${props => props.isThisMonth ? 'scale(1.5)' : ''};
+    box-shadow: ${props => props.isThisMonth ? '2px 2px 5px grey' : ''};
   }
 `;
