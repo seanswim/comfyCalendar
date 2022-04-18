@@ -7,18 +7,20 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 const Calendar = () => {
 
-  const [targetDate, setTargetDate] = useState(moment());
+  const [today, setToday] = useState(moment());
   
   //Generate Weeks & Days Information of TargetMonth
-  const firstWeek = targetDate.clone().startOf('month').week();
-  const lastWeek = targetDate.clone().endOf('month').week() === 1 ? 53 : targetDate.clone().endOf('month').week();
+  const firstWeek = today.clone().startOf('month').week();
+  const lastWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
   let week = firstWeek;
   let dates = [];
   for (week; week <= lastWeek; week++) {
     let date = Array(7).fill(0).map((element, index) => {
-      let day = targetDate.clone().startOf('year').week(week).startOf('week').add(index, 'day');
+      let day = today.clone().startOf('year').week(week).startOf('week').add(index, 'day');
       return {
+        date: day.format('YYYY MM DD'),
         week: week,
+        month: day.format('MM'),
         day: day.format('D')
       }
     })
@@ -26,16 +28,16 @@ const Calendar = () => {
   } 
 
   //Change Target Month
-  const prevMonth = () => setTargetDate(targetDate.clone().subtract(1, 'month'));
-  const nextMonth = () => setTargetDate(targetDate.clone().add(1, 'month'));
+  const prevMonth = () => setToday(today.clone().subtract(1, 'month'));
+  const nextMonth = () => setToday(today.clone().add(1, 'month'));
 
   return (
     <CalendarContainer>
       <MonthYearContainer>
-        <YearContainer>{targetDate.format('YYYY')}</YearContainer>
+        <YearContainer>{today.format('YYYY')}</YearContainer>
         <MonthContainer>
           <Arrow><FaAngleLeft size={'40'} onClick={prevMonth}/></Arrow>
-          {targetDate.format('MM')}
+          {today.format('MM')}
           <Arrow><FaAngleRight size={'40'} onClick={nextMonth}/></Arrow>
         </MonthContainer>
       </MonthYearContainer>
@@ -44,7 +46,15 @@ const Calendar = () => {
         {dates.map((week, index) => {
           return (
             <Row key={index+100}>
-              {week.map((day) => <DateCell key={day.day} day={day.day} />)}
+              {week.map((day) => {
+                let isThisMonth = true;
+                let isToday = false;
+                if (day.date === moment().format('YYYY MM DD')) isToday = true;
+                if (day.month !== today.format('MM')) isThisMonth = false;
+                return (
+                <DateCell key={day.day} day={day.day} isThisMonth={isThisMonth} isToday={isToday}/>
+                )}
+              )}
             </Row>
           )}
         )}
