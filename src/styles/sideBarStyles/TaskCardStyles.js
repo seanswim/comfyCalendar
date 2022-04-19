@@ -32,9 +32,6 @@ export const MenuContainer = styled.div`
   right: 5%;
 `;
 
-export const MenuWrapper = styled.div`
-`;
-
 export const Time = styled.div`
   font-size: 1.5rem;
 `;

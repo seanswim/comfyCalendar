@@ -24,3 +24,6 @@ export const SideBarText = styled.div`
 export const SideBarDay = styled.div`
   color: grey;
 `;
+
+export const AddCardButton = styled.div`
+`;
