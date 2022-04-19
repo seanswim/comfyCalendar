@@ -10,6 +10,7 @@ export const Header = styled.div`
 
 export const Body = styled.div`
   display: flex;
+  align-items: flex-start;
   flex-wrap: wrap;
   justify-content: center;
 `;
