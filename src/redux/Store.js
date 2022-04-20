@@ -2,16 +2,16 @@ import { configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
-
+import statesReducer from './Slice';
 
 const reducers = combineReducers({
-
+  states: statesReducer,
 })
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['users']
+  whitelist: ['states']
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers);

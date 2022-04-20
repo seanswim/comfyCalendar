@@ -62,3 +62,9 @@ export const Button = styled.button`
     opacity: 0.5;
   }
 `;
+
+export const InvalidRequest = styled.div`
+  font-size: 0.8rem;
+  color: lightsalmon;
+  margin: 1rem 0 0 0;
+`;
