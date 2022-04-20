@@ -26,4 +26,5 @@ export const SideBarDay = styled.div`
 `;
 
 export const AddCardButton = styled.div`
+
 `;

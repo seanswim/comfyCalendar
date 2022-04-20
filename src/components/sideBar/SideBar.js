@@ -4,6 +4,7 @@ import AddCardModal from "./AddCardModal";
 import TaskCard from "./TaskCard";
 import { useState } from "react";
 
+
 const SideBar = () => {
 
   const [openCardModal, setOpenCardModal] = useState(false);
