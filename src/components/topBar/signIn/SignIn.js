@@ -8,12 +8,11 @@ import { doc, getDoc } from "firebase/firestore";
 import sha256 from 'crypto-js/sha256';
 import { setUserState } from "../../../redux/Slice";
 
+
 const SignIn = ({ openSginInModal }) => {
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('')
-  const [invalidRequest, setInvalidRequest] = useState(false);
-  const dispatch = useDispatch();
 
   //Outside click detecting
   const ref = useRef();
