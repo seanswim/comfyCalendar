@@ -1,4 +1,4 @@
-import { Button, IdContainer, Input, NormalSignInContainer, PasswordContainer, SignInBackground, SignInContainer, InvalidRequest } from "../../../styles/topBarStyles/signInStyles/SignInStyles";
+import { Button, IdContainer, Input, NormalSignInContainer, PasswordContainer, SignInBackground, SignInContainer, InvalidRequest } from "../../../styles/topBarStyles/signInOutStyles/SignInStyles";
 import { useState, useRef, useEffect } from "react"; 
 import { useDispatch } from "react-redux";
 import { FaUserCircle, FaKey } from "react-icons/fa";
@@ -8,7 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import sha256 from 'crypto-js/sha256';
 import { setUserState } from "../../../redux/Slice";
 
-const SignIn = ({ openSginInModal }) => {
+const SignIn = ({ openSignInModal }) => {
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('')
@@ -21,7 +21,7 @@ const SignIn = ({ openSginInModal }) => {
     const handleClickOutside=(event)=>{
       if (ref.current){
         if (!ref.current.contains(event.target)) {
-          openSginInModal();
+          openSignInModal();
         }
       }
     }
@@ -39,15 +39,15 @@ const SignIn = ({ openSginInModal }) => {
       const userId = userCredential.user.uid;
       const docRef = doc(db, "users", userId);
       const docSnap = await getDoc(docRef);
+      //Update user state
       let payload = { 
         user: { id: docSnap.data().id, email: docSnap.data().email, img: docSnap.data().img, name: docSnap.data().name },
         signin: true
       }
       dispatch(setUserState(payload))
-      openSginInModal();
+      openSignInModal();
     })
     .catch((error) => {
-      console.log(error);
       setInvalidRequest(true);
     });
   }
