@@ -7,10 +7,10 @@ const TaskCard = () => {
       <TaskCardWrapper>
         <Time>00:00 ~ 24:00</Time>
         <CreatedBy>Created by</CreatedBy>
-        <Title>Location</Title>
-        <Content>palisadias park</Content>
         <Title>Description</Title>
         <Content>Let's go jeju with friends</Content>
+        <Title>Location</Title>
+        <Content>palisadias park</Content>
         <Title>Participants</Title>
         <Content>palisadias park</Content>
       </TaskCardWrapper>

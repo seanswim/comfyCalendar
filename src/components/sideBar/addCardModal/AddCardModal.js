@@ -1,6 +1,8 @@
 import { Input, ModalBackground, ModalContainer, TitleContainer, ButtonContainer, Button, StartAt, EndAt, DayPicker, TimePicker } from "../../../styles/sideBarStyles/addCardModalStyles/AddCardModalStyles";
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
+import { doc, collection, setDoc } from "firebase/firestore";
+import { db, auth } from "../../../firebase";
 
 const AddCardModal = ({openAddCardModal}) => {
 
@@ -33,7 +35,10 @@ const AddCardModal = ({openAddCardModal}) => {
   //Input handlers
   const handleLocationInput = (event) => setLocation(event.target.value);
   const handleDescriptionInput = (event) => setDescription(event.target.value);
-  const handleStartMonthInput = (event) => setSatrtMonth(event.target.value);
+  const handleStartMonthInput = (event) => {
+    setSatrtMonth(event.target.value);
+    if (new Date(startMonth) > new Date(endMonth)) setEndMonth(event.target.value);
+  }
   const handleStartTimeInput = (event) => {
     setSatrtTime(event.target.value);
     setEndTime(event.target.value);
@@ -42,8 +47,19 @@ const AddCardModal = ({openAddCardModal}) => {
   const handleEndTimeInput = (event) => setEndTime(event.target.value);
 
   //Submit
-  const submit = () => {
-    
+  const submit = async () => {
+    const newPlan = doc(collection(db, `users/${states.user.id}/plans`));
+    await setDoc(newPlan, {
+      id: newPlan.id,
+      description: description,
+      startAt: startMonth + ' ' + startTime,
+      endAt: endMonth + ' ' + endTime,
+      location: location,
+      createdBy: states.user.name,
+      updatedAt: new Date(),
+      createdAt: new Date(),
+    });
+    openAddCardModal();
   }
 
   return (
