@@ -24,7 +24,7 @@ export const states = createSlice({
       state.signin = action.payload.signin;
     },
     setTargetDate: (state, action) => {
-      state.targetDate = action.payload.targetDate;
+      state.targetDate = action.payload;
     },
     resetUserState: () => initialState
   }
