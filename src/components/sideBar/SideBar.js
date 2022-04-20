@@ -7,7 +7,7 @@ import { useState } from "react";
 
 const SideBar = () => {
 
-  const [openCardModal, setOpenCardModal] = useState(true);
+  const [openCardModal, setOpenCardModal] = useState(false);
   const openAddCardModal = (event) => {
     setOpenCardModal(!openCardModal);
     if (event) event.stopPropagation();
