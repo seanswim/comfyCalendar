@@ -4,10 +4,12 @@ import DateCell from "./DateCell";
 import moment from "moment";
 import { useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Calendar = () => {
 
   const [today, setToday] = useState(moment());
+  const states = useSelector((state) => state.reducer.states);
   
   //Generate Weeks & Days Information of TargetMonth
   const firstWeek = today.clone().startOf('month').week();
@@ -49,10 +51,12 @@ const Calendar = () => {
               {week.map((day) => {
                 let isThisMonth = true;
                 let isToday = false;
+                let isTarget = false;
                 if (day.date === moment().format('YYYY MM DD')) isToday = true;
                 if (day.month !== today.format('MM')) isThisMonth = false;
+                if (day.date === states.targetDate) isTarget = true;
                 return (
-                <DateCell key={day.day} day={day.day} isThisMonth={isThisMonth} isToday={isToday}/>
+                <DateCell key={day.day} day={day.day} date={day} isThisMonth={isThisMonth} isToday={isToday} isTarget={isTarget}/>
                 )}
               )}
             </Row>
