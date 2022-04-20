@@ -1,4 +1,4 @@
-import profile from "../../img/profile.png";
+import defaultProfile from "../../img/profile.png";
 import user1 from "../../img/user1.jpg";
 import user2 from "../../img/user2.jpg";
 import { ProfileIconContainer, ProfileIconImg } from '../../styles/topBarStyles/ProfileIconStyles';
@@ -6,6 +6,7 @@ import { useState } from "react";
 import SignIn from "./signInOut/SignIn";
 import { useSelector } from "react-redux";
 import SignOut from "./signInOut/SignOut";
+import { useEffect } from "react";
 
 const ProfileIcon = () => {
 
@@ -20,6 +21,7 @@ const ProfileIcon = () => {
     if (event) event.stopPropagation();
   }
   const states = useSelector((state) => state.reducer.states);
+  let profile = defaultProfile;
   if (states.signin) {
     if (states.user.name === 'user1') profile = user1;
     if (states.user.name === 'user2') profile = user2;
