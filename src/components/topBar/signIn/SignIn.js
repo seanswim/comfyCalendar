@@ -2,11 +2,10 @@ import { Button, IdContainer, Input, NormalSignInContainer, PasswordContainer, S
 import { useState, useRef, useEffect } from "react"; 
 import { FaUserCircle, FaKey } from "react-icons/fa";
 import sha256 from 'crypto-js/sha256';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../firebase";
 
 const SignIn = ({ openSginInModal }) => {
-
-  const passwordHash = sha256('1q2w3e4r').toString();
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('')
@@ -29,8 +28,15 @@ const SignIn = ({ openSginInModal }) => {
 
   //Sign in with Email and password
   const handleSignin = () => {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, )
+    signInWithEmailAndPassword(auth, id, sha256(password).toString()).then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log(user)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
   }
 
   const handleIdChange = (e) => setId(e.target.value)
