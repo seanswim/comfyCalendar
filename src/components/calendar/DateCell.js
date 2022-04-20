@@ -10,7 +10,7 @@ const DateCell = ({ day, date, isThisMonth, isToday, isTarget }) => {
   }
 
   return (
-    <DateCellContainer isThisMonth={isThisMonth} isToday={isToday} isTarget={isTarget} onClick={handleTargetDate}>
+    <DateCellContainer isThisMonth={isThisMonth} isToday={isToday} isTarget={isTarget} onClick={isThisMonth ? handleTargetDate : null}>
       {day}
     </DateCellContainer>
   )

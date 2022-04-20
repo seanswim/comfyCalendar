@@ -1,9 +1,9 @@
 import { SideBarContainer, SideBarWrapper, SideBarText, SideBarDay, AddCardButton } from "../../styles/sideBarStyles/SideBarStyles";
 import AddCard from "./AddCard";
-import AddCardModal from "./AddCardModal";
+import AddCardModal from "./addCardModal/AddCardModal";
 import TaskCard from "./TaskCard";
 import { useState } from "react";
-
+import { useSelector } from "react-redux";
 
 const SideBar = () => {
 
@@ -12,12 +12,14 @@ const SideBar = () => {
     setOpenCardModal(!openCardModal);
     if (event) event.stopPropagation();
   }
+  const states = useSelector((state) => state.reducer.states);
+  const [targetYearm, targetMonth, targetDay] = states.targetDate.split(' ');
 
   return (
     <SideBarContainer>
       <SideBarWrapper>
         <SideBarText>To Do</SideBarText>
-        <SideBarDay>04.19</SideBarDay>
+        <SideBarDay>{`${targetMonth}.${targetDay}`}</SideBarDay>
         <TaskCard></TaskCard>
         <TaskCard></TaskCard>
         <AddCardButton onClick={openAddCardModal}><AddCard/></AddCardButton>
