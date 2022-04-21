@@ -15,13 +15,20 @@ const SideBar = () => {
   const states = useSelector((state) => state.reducer.states);
   const [targetYearm, targetMonth, targetDay] = states.targetDate.split(' ');
 
+  //Filter out plans
+  const targetDateForm = new Date (states.targetDate.replaceAll(' ','-')).getTime()/1000;
+  const todoList = states.plans.filter((item) => {
+    if (item.startDate.seconds <= targetDateForm && targetDateForm <= item.endDate.seconds) {
+      return item;
+    }
+  });
+
   return (
     <SideBarContainer>
       <SideBarWrapper>
         <SideBarText>To Do</SideBarText>
         <SideBarDay>{`${targetMonth}.${targetDay}`}</SideBarDay>
-        <TaskCard></TaskCard>
-        <TaskCard></TaskCard>
+        {todoList.map((item, index) => <TaskCard key={index} data={item}/>)}
         <AddCardButton onClick={openAddCardModal}><AddCard/></AddCardButton>
         {openCardModal ? <AddCardModal openAddCardModal={openAddCardModal}/> : null}
       </SideBarWrapper>

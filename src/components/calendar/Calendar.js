@@ -44,7 +44,7 @@ const Calendar = () => {
     setToday(today.clone().add(1, 'month'));
   };
 
-  //Fetching data
+  //Fetch plans data from db and filter out target month data 
   const getData = async() => {
     try{
       const collectionRef = collection(db, `users/${states.user.id}/plans`);
@@ -62,10 +62,9 @@ const Calendar = () => {
     }
   }
 
-  //Fetch plans data from db and filter out target month data 
   useEffect(() => {
     if (states.signin) getData();
-  }, [today])
+  }, [states.signin, states.user, states.targetDate, states.lastUpdate])
 
   return (
     <CalendarContainer>

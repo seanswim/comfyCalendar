@@ -11,7 +11,8 @@ const initialState = {
   },
   signin: false,
   targetDate: moment().format('YYYY MM DD'),
-  plans: []
+  plans: [],
+  lastUpdate: ''
 }
 
 export const states = createSlice({
@@ -31,9 +32,12 @@ export const states = createSlice({
     setPlans: (state, action) => {
       state.plans = action.payload;
     },
-    resetUserState: () => initialState
+    resetUserState: () => initialState,
+    setLastUpdate: (state, action) => {
+      state.lastUpdate = action.payload;
+    }
   }
 })
 
-export const { setUserState, setTargetDate, resetUserState, setPlans } = states.actions;
+export const { setUserState, setTargetDate, resetUserState, setPlans, setLastUpdate } = states.actions;
 export default states.reducer;

@@ -24,7 +24,7 @@ const SignOut = ({ openSignOutModal }) => {
   }, [])
 
   const dispatch = useDispatch();
-  const initiateSignOut = () => {
+  const initiateSignOut = () => { 
     signOut(auth).then(() => {
       dispatch(resetUserState())
       openSignOutModal()
@@ -33,9 +33,13 @@ const SignOut = ({ openSignOutModal }) => {
     });
   }
 
+  const handleKeyPress = (event) => {
+    if (event.keyCode === 13) initiateSignOut();
+  }
+
   return (
     <SignOutBackground>
-      <SignOutContainer ref={ref}>
+      <SignOutContainer ref={ref} tabIndex="0" onKeyDown={handleKeyPress}>
         Do you really wish to leave? :(
         <Button onClick={initiateSignOut}>Sign Out</Button>
       </SignOutContainer>

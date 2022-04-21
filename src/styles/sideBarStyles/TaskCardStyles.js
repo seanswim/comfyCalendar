@@ -32,8 +32,26 @@ export const MenuContainer = styled.div`
   right: 5%;
 `;
 
-export const Time = styled.div`
+export const DateAndTimeContainer = styled.div`
+  display: flex;
+  text-align: center;
+  span {
+    margin: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+`;
+
+export const DateAndTimeWrapper = styled.div`
+`;
+
+export const TimeContainer = styled.div`
   font-size: 1.5rem;
+`;
+
+export const DateContainer = styled.div`
+  font-size: 0.8rem;
 `;
 
 export const CreatedBy = styled.div`
