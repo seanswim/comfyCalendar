@@ -4,16 +4,18 @@ import DateCell from "./DateCell";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { doc, getDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { db, auth } from "../../firebase";
+import { setPlans } from "../../redux/Slice";
 
 const Calendar = () => {
 
   const [today, setToday] = useState(moment());
   const states = useSelector((state) => state.reducer.states);
+  const dispatch = useDispatch();
   
-  //Generate Weeks & Days Information of TargetMonth
+  //Make a list of dates in order to render to Calendar component
   const firstWeek = today.clone().startOf('month').week();
   const lastWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
   let week = firstWeek;
@@ -35,24 +37,25 @@ const Calendar = () => {
   const prevMonth = () => setToday(today.clone().subtract(1, 'month'));
   const nextMonth = () => setToday(today.clone().add(1, 'month'));
 
-  //Fetch plans of the target month from db
+  //Fetch plans data from db and filter out target month data 
   useEffect(() => {
     const getData = async() => {
       try{
         const collectionRef = collection(db, `users/${states.user.id}/plans`);
         const targetDateForm = new Date(states.targetDate.replaceAll(' ','-').slice(0,-3)).getTime()/1000;
-        let test = [];
+        let plans = [];
         const docsSnap = await getDocs(collectionRef);
         docsSnap.forEach((doc) => {
           if (doc.data().startMonth.seconds <= targetDateForm && targetDateForm <= doc.data().endMonth.seconds) {
-            test.push(doc.data())
+            plans.push(doc.data());
           }
         });        
+        dispatch(setPlans(plans));
       } catch(error) {
         console.error(error);
       }
     }
-    getData();
+    if (states.signin) getData();
   }, [])
 
   return (
