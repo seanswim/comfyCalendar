@@ -2,9 +2,11 @@ import { CalendarContainer, MonthYearContainer, YearContainer, MonthContainer, T
 import DayOfWeek from "./DayOfWeek";
 import DateCell from "./DateCell";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { doc, getDoc, getDocs, collection, query, where } from "firebase/firestore";
+import { db, auth } from "../../firebase";
 
 const Calendar = () => {
 
@@ -32,6 +34,26 @@ const Calendar = () => {
   //Change Target Month
   const prevMonth = () => setToday(today.clone().subtract(1, 'month'));
   const nextMonth = () => setToday(today.clone().add(1, 'month'));
+
+  //Fetch plans of the target month from db
+  useEffect(() => {
+    const getData = async() => {
+      try{
+        const collectionRef = collection(db, `users/${states.user.id}/plans`);
+        const targetDateForm = new Date(states.targetDate.replaceAll(' ','-').slice(0,-3)).getTime()/1000;
+        let test = [];
+        const docsSnap = await getDocs(collectionRef);
+        docsSnap.forEach((doc) => {
+          if (doc.data().startMonth.seconds <= targetDateForm && targetDateForm <= doc.data().endMonth.seconds) {
+            test.push(doc.data())
+          }
+        });        
+      } catch(error) {
+        console.error(error);
+      }
+    }
+    getData();
+  }, [])
 
   return (
     <CalendarContainer>

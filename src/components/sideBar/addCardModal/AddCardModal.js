@@ -7,9 +7,9 @@ import { db, auth } from "../../../firebase";
 const AddCardModal = ({openAddCardModal}) => {
 
   const states = useSelector((state) => state.reducer.states);
-  const [startMonth, setSatrtMonth] = useState(states.targetDate.replaceAll(' ', '-'));
+  const [startDate, setSatrtMonth] = useState(states.targetDate.replaceAll(' ', '-'));
   const [startTime, setSatrtTime] = useState("00:00");
-  const [endMonth, setEndMonth] = useState(states.targetDate.replaceAll(' ', '-'));
+  const [endDate, setEndDate] = useState(states.targetDate.replaceAll(' ', '-'));
   const [endTime, setEndTime] = useState("00:00");
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
@@ -35,15 +35,15 @@ const AddCardModal = ({openAddCardModal}) => {
   //Input handlers
   const handleLocationInput = (event) => setLocation(event.target.value);
   const handleDescriptionInput = (event) => setDescription(event.target.value);
-  const handleStartMonthInput = (event) => {
+  const handleStartDateInput = (event) => {
     setSatrtMonth(event.target.value);
-    if (new Date(startMonth) > new Date(endMonth)) setEndMonth(event.target.value);
+    if (new Date(startDate) > new Date(endDate)) setEndDate(event.target.value);
   }
   const handleStartTimeInput = (event) => {
     setSatrtTime(event.target.value);
     setEndTime(event.target.value);
   }
-  const handleEndMonthInput = (event) => setEndMonth(event.target.value);
+  const handleEndDateInput = (event) => setEndDate(event.target.value);
   const handleEndTimeInput = (event) => setEndTime(event.target.value);
 
   //Submit
@@ -52,8 +52,12 @@ const AddCardModal = ({openAddCardModal}) => {
     await setDoc(newPlan, {
       id: newPlan.id,
       description: description,
-      startAt: startMonth + ' ' + startTime,
-      endAt: endMonth + ' ' + endTime,
+      startDate: new Date(startDate),
+      startMonth: new Date(startDate.slice(0,-3)),
+      startTime: startTime,
+      endDate: new Date(endDate),
+      endMonth: new Date(endDate.slice(0,-3)),
+      endTime: endTime,
       location: location,
       createdBy: states.user.name,
       updatedAt: new Date(),
@@ -67,12 +71,12 @@ const AddCardModal = ({openAddCardModal}) => {
       <ModalContainer ref={ref}>
         Starts at*
         <StartAt>
-          <DayPicker type="date" value={startMonth} onChange={handleStartMonthInput} />
+          <DayPicker type="date" value={startDate} onChange={handleStartDateInput} />
           <TimePicker type="time" value={startTime} onChange={handleStartTimeInput}/>
         </StartAt>
         Ends at*
         <EndAt>
-          <DayPicker type="date" value={endMonth} onChange={handleEndMonthInput} min={startMonth}/>
+          <DayPicker type="date" value={endDate} onChange={handleEndDateInput} min={startDate}/>
           <TimePicker type="time" value={endTime} onChange={handleEndTimeInput} />
         </EndAt>
         <TitleContainer>Description *</TitleContainer>
