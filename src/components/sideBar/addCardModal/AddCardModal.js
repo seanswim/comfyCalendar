@@ -1,12 +1,14 @@
 import { Input, ModalBackground, ModalContainer, TitleContainer, ButtonContainer, Button, StartAt, EndAt, DayPicker, TimePicker } from "../../../styles/sideBarStyles/addCardModalStyles/AddCardModalStyles";
 import { useState, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { doc, collection, setDoc } from "firebase/firestore";
 import { db, auth } from "../../../firebase";
+import { resetPlans } from "../../../redux/Slice"
 
 const AddCardModal = ({openAddCardModal}) => {
 
   const states = useSelector((state) => state.reducer.states);
+  const dispatch = useDispatch();
   const [startDate, setSatrtMonth] = useState(states.targetDate.replaceAll(' ', '-'));
   const [startTime, setSatrtTime] = useState("00:00");
   const [endDate, setEndDate] = useState(states.targetDate.replaceAll(' ', '-'));
@@ -14,7 +16,6 @@ const AddCardModal = ({openAddCardModal}) => {
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
   const [participants, setParticipants] = useState([null]);
-
 
   //Outside click detecting
   const ref = useRef();
