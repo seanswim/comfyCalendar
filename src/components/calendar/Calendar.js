@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { doc, getDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 import { setPlans } from "../../redux/Slice";
+import { setTargetDate } from "../../redux/Slice";
 
 const Calendar = () => {
 
@@ -34,29 +35,37 @@ const Calendar = () => {
   } 
 
   //Change Target Month
-  const prevMonth = () => setToday(today.clone().subtract(1, 'month'));
-  const nextMonth = () => setToday(today.clone().add(1, 'month'));
+  const prevMonth = async () => {
+    dispatch(setTargetDate(today.clone().subtract(1, 'month').format('YYYY MM DD')));
+    setToday(today.clone().subtract(1, 'month'));    
+  };
+  const nextMonth = async () => {
+    dispatch(setTargetDate(today.clone().add(1, 'month').format('YYYY MM DD')));
+    setToday(today.clone().add(1, 'month'));
+  };
+
+  //Fetching data
+  const getData = async() => {
+    try{
+      const collectionRef = collection(db, `users/${states.user.id}/plans`);
+      const targetDateForm = new Date(states.targetDate.replaceAll(' ','-').slice(0,-3)).getTime()/1000;
+      let plans = [];
+      const docsSnap = await getDocs(collectionRef);
+      docsSnap.forEach((doc) => {
+        if (doc.data().startMonth.seconds <= targetDateForm && targetDateForm <= doc.data().endMonth.seconds) {
+          plans.push(doc.data());
+        }
+      });        
+      dispatch(setPlans(plans));
+    } catch(error) {
+      console.error(error);
+    }
+  }
 
   //Fetch plans data from db and filter out target month data 
   useEffect(() => {
-    const getData = async() => {
-      try{
-        const collectionRef = collection(db, `users/${states.user.id}/plans`);
-        const targetDateForm = new Date(states.targetDate.replaceAll(' ','-').slice(0,-3)).getTime()/1000;
-        let plans = [];
-        const docsSnap = await getDocs(collectionRef);
-        docsSnap.forEach((doc) => {
-          if (doc.data().startMonth.seconds <= targetDateForm && targetDateForm <= doc.data().endMonth.seconds) {
-            plans.push(doc.data());
-          }
-        });        
-        dispatch(setPlans(plans));
-      } catch(error) {
-        console.error(error);
-      }
-    }
     if (states.signin) getData();
-  }, [])
+  }, [today])
 
   return (
     <CalendarContainer>
