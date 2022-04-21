@@ -1,16 +1,30 @@
-import { Content, CreatedBy, MenuContainer, TaskCardContainer, TaskCardWrapper, Time, Title } from "../../styles/sideBarStyles/TaskCardStyles";
+import { Content, CreatedBy, MenuContainer, TaskCardContainer, TaskCardWrapper, DateContainer, TimeContainer, Title, DateAndTimeContainer, DateAndTimeWrapper } from "../../styles/sideBarStyles/TaskCardStyles";
 import { FaEllipsisV } from "react-icons/fa";
 
-const TaskCard = () => {
+const TaskCard = ({ data }) => {
+
+  const startDate = new Date(data.startDate.seconds*1000).toISOString().substring(0, 10);
+  const endDate = new Date(data.endDate.seconds*1000).toISOString().substring(0, 10);
+
   return (
     <TaskCardContainer>
       <TaskCardWrapper>
-        <Time>00:00 ~ 24:00</Time>
-        <CreatedBy>Created by</CreatedBy>
+        <DateAndTimeContainer>
+          <DateAndTimeWrapper>
+            <DateContainer>{startDate}</DateContainer>
+            <TimeContainer>{data.startTime}</TimeContainer>
+          </DateAndTimeWrapper>
+          <span>~</span>
+          <DateAndTimeWrapper>
+            <DateContainer>{endDate}</DateContainer>
+            <TimeContainer>{data.endTime}</TimeContainer>
+          </DateAndTimeWrapper>
+        </DateAndTimeContainer>
+        <CreatedBy>Created by {data.createdBy}</CreatedBy>
         <Title>Description</Title>
-        <Content>Let's go jeju with friends</Content>
+        <Content>{data.description}</Content>
         <Title>Location</Title>
-        <Content>palisadias park</Content>
+        <Content>{data.location? data.location : '-'}</Content>
         <Title>Participants</Title>
         <Content>palisadias park</Content>
       </TaskCardWrapper>
