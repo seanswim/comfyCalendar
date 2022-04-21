@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import moment from "moment";
 
 
 const initialState = {
@@ -6,10 +7,10 @@ const initialState = {
     id: '',
     email: '',
     img: '',
-    name: '',
+    name: ''
   },
   signin: false,
-  targetDate: '',
+  targetDate: moment().format('YYYY MM DD'),
   plans: []
 }
 
@@ -28,7 +29,7 @@ export const states = createSlice({
       state.targetDate = action.payload;
     },
     setPlans: (state, action) => {
-      state.push(action);
+      state.plans = action.payload;
     },
     resetUserState: () => initialState
   }
