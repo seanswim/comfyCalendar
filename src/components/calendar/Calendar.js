@@ -64,7 +64,7 @@ const Calendar = () => {
 
   useEffect(() => {
     if (states.signin) getData();
-  }, [states.signin, states.user, states.targetDate])
+  }, [states.signin, states.user, states.targetDate, states.lastUpdate])
 
   return (
     <CalendarContainer>

@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { doc, collection, setDoc } from "firebase/firestore";
 import { db, auth } from "../../../firebase";
-import { resetPlans } from "../../../redux/Slice"
+import { setLastUpdate } from "../../../redux/Slice";
 
 const AddCardModal = ({openAddCardModal}) => {
 
@@ -50,7 +50,7 @@ const AddCardModal = ({openAddCardModal}) => {
   //Submit
   const submit = async () => {
     const newPlan = doc(collection(db, `users/${states.user.id}/plans`));
-    await setDoc(newPlan, {
+    const data = {
       id: newPlan.id,
       description: description,
       startDate: new Date(startDate),
@@ -63,7 +63,9 @@ const AddCardModal = ({openAddCardModal}) => {
       createdBy: states.user.name,
       updatedAt: new Date(),
       createdAt: new Date(),
-    });
+    }
+    await setDoc(newPlan, data);
+    dispatch(setLastUpdate(new Date()));
     openAddCardModal();
   }
 
