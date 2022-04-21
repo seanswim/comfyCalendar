@@ -52,12 +52,16 @@ const SignIn = ({ openSignInModal }) => {
     });
   }
 
+  const handleKeyPress = (event) => {
+    if (event.keyCode === 13) handleSignin();
+  }
+
   const handleIdChange = (e) => setId(e.target.value)
   const handlePWChange = (e) => setPassword(e.target.value)
 
   return (
     <SignInBackground>
-      <SignInContainer ref={ref}>
+      <SignInContainer ref={ref} tabIndex="0" onKeyDown={handleKeyPress}>
         <NormalSignInContainer>
           <IdContainer>
             <FaUserCircle />
