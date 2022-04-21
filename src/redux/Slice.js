@@ -10,6 +10,7 @@ const initialState = {
   },
   signin: false,
   targetDate: '',
+  plans: []
 }
 
 export const states = createSlice({
@@ -26,9 +27,12 @@ export const states = createSlice({
     setTargetDate: (state, action) => {
       state.targetDate = action.payload;
     },
+    setPlans: (state, action) => {
+      state.push(action);
+    },
     resetUserState: () => initialState
   }
 })
 
-export const { setUserState, setTargetDate, resetUserState } = states.actions;
+export const { setUserState, setTargetDate, resetUserState, setPlans } = states.actions;
 export default states.reducer;
