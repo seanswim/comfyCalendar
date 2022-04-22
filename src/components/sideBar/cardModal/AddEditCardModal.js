@@ -1,7 +1,7 @@
 import { Input, ModalBackground, ModalContainer, TitleContainer, ButtonContainer, Button, StartAt, EndAt, DayPicker, TimePicker, Participants } from "../../../styles/sideBarStyles/cardModalStyles/AddEditCardModalStyles";
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { doc, collection, setDoc } from "firebase/firestore";
+import { doc, collection, setDoc, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from "../../../firebase";
 import { setLastUpdate } from "../../../redux/Slice";
 import Participant from "./participant/Participant";
@@ -26,7 +26,7 @@ const AddEditCardModal = ({openAddCardModal, data, action}) => {
     endTimeInit = "00:00";
     locationInit = '';
     descriptionInit = '';
-    participantListInit = [];
+    participantListInit = [states.user.name];
   }
   if (action === 'edit') {
     startDateInit = new Date(data.startDate.seconds*1000).toISOString().substring(0, 10);
@@ -94,15 +94,37 @@ const AddEditCardModal = ({openAddCardModal, data, action}) => {
     }
 
     if (action === 'add') {
+      //Create a plan
       const newPlan = doc(collection(db, `users/${states.user.id}/plans`));
       obj.id = newPlan.id;
       await setDoc(newPlan, obj);
+      //share a plan
+      const usersRef = collection(db, "users");
+      participantList.forEach( async (item) => {
+        const q = query(usersRef, where("name", "==", item));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach( async (data) => {
+          let sharePlan = doc(db, `users/${data.id}/plans/${obj.id}`);
+          await setDoc(sharePlan, obj);
+        });
+      })
     }
 
     if (action === 'edit') {
+      //Edit a plan
       const editingPlan = doc(db, `users/${states.user.id}/plans/${data.id}`);
       obj.id = data.id;
       await setDoc(editingPlan, obj);
+      //share a edited plan
+      const usersRef = collection(db, "users");
+      participantList.forEach( async (item) => {
+        const q = query(usersRef, where("name", "==", item));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach( async (data) => {
+          let sharePlan = doc(db, `users/${data.id}/plans/${obj.id}`);
+          await setDoc(sharePlan, obj);
+        });
+      })
     }
     dispatch(setLastUpdate(new Date()));
     openAddCardModal();

@@ -1,7 +1,7 @@
 import { MenuContainer, MenuWrapper, Icon, Text, IconTextContainer } from "../../../styles/sideBarStyles/cardModalStyles/MenuStyles";
 import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
 import { useRef, useEffect } from "react"
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase"
 import { useSelector, useDispatch } from "react-redux";
 import { setLastUpdate } from "../../../redux/Slice";
@@ -30,6 +30,18 @@ const Menu = ({opendEditModal, closeModal, data}) => {
   //Delete plan data
   const deletePlan = async () => {
     await deleteDoc(doc(db, `users/${states.user.id}/plans/${data.id}`));
+    
+    //share deleting a plan
+    const usersRef = collection(db, "users");
+    data.participants.forEach( async (item) => {
+      const q = query(usersRef, where("name", "==", item));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach( async (item) => {
+        let sharePlan = doc(db, `users/${item.id}/plans/${data.id}`);
+        await deleteDoc(sharePlan);
+      });
+    })
+
     dispatch(setLastUpdate(new Date()));
   }
 
