@@ -1,22 +1,24 @@
-import { Input, ModalBackground, ModalContainer, TitleContainer, ButtonContainer, Button, StartAt, EndAt, DayPicker, TimePicker } from "../../../styles/sideBarStyles/cardModalStyles/AddEditCardModalStyles";
+import { Input, ModalBackground, ModalContainer, TitleContainer, ButtonContainer, Button, StartAt, EndAt, DayPicker, TimePicker, Participants } from "../../../styles/sideBarStyles/cardModalStyles/AddEditCardModalStyles";
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { doc, collection, setDoc } from "firebase/firestore";
 import { db, auth } from "../../../firebase";
 import { setLastUpdate } from "../../../redux/Slice";
+import Participant from "./participant/Participant";
 
 const AddEditCardModal = ({openAddCardModal, data, action}) => {
 
   const states = useSelector((state) => state.reducer.states);
   const dispatch = useDispatch();
 
+  //Setting default values of states
   let startDateInit;
   let startTimeInit;
   let endDateInit;
   let endTimeInit;
   let locationInit;
   let descriptionInit;
-
+  let participantListInit;
   if (action === 'add') {
     startDateInit = states.targetDate.replaceAll(' ', '-');
     startTimeInit = "00:00";
@@ -24,6 +26,7 @@ const AddEditCardModal = ({openAddCardModal, data, action}) => {
     endTimeInit = "00:00";
     locationInit = '';
     descriptionInit = '';
+    participantListInit = [];
   }
   if (action === 'edit') {
     startDateInit = new Date(data.startDate.seconds*1000).toISOString().substring(0, 10);
@@ -32,15 +35,16 @@ const AddEditCardModal = ({openAddCardModal, data, action}) => {
     endTimeInit = data.endTime;
     locationInit = data.location;
     descriptionInit = data.description;
+    participantListInit = data.participants;
   }
-
   const [startDate, setSatrtMonth] = useState(startDateInit);
   const [startTime, setSatrtTime] = useState(startTimeInit);
   const [endDate, setEndDate] = useState(endDateInit);
   const [endTime, setEndTime] = useState(endTimeInit);
   const [location, setLocation] = useState(locationInit);
   const [description, setDescription] = useState(descriptionInit);
-  const [participants, setParticipants] = useState([null]);
+  const [participants, setParticipants] = useState('');
+  const [participantList, setParticipantList] = useState(participantListInit);
 
   //Outside click detecting
   const ref = useRef();
@@ -86,6 +90,7 @@ const AddEditCardModal = ({openAddCardModal, data, action}) => {
       createdBy: states.user.name,
       updatedAt: new Date(),
       createdAt: new Date(),
+      participants: participantList
     }
 
     if (action === 'add') {
@@ -101,6 +106,28 @@ const AddEditCardModal = ({openAddCardModal, data, action}) => {
     }
     dispatch(setLastUpdate(new Date()));
     openAddCardModal();
+  }
+
+  //Handling participants list
+  const handleEnter = (event) => {
+    let list = [...participantList] 
+    if(event.keyCode === 13) {
+      event.preventDefault();
+      const duplicationCheck = participantList.filter((item) => item === participants);
+      if (duplicationCheck.length === 0) {
+        list.push(participants);
+        setParticipantList(list);
+      }
+      setParticipants('')
+    }
+  }
+  const handleParticipantsInput = (event) => {
+    setParticipants(event.target.value);
+  }
+  const deleteParticipant = (event, key) => {
+    let list = participantList.filter((item, index) => index !== key);
+    setParticipantList(list);
+    if (event) event.stopPropagation();
   }
 
   return (
@@ -119,9 +146,12 @@ const AddEditCardModal = ({openAddCardModal, data, action}) => {
         <TitleContainer>Description *</TitleContainer>
         <Input maxLength="250" value={description} onChange={handleDescriptionInput} />
         <TitleContainer>Location</TitleContainer>
-        <Input placeholder="Optional" maxLength="80" value={location} onChange={handleLocationInput} />
+        <Input maxLength="80" value={location} onChange={handleLocationInput} />
         <TitleContainer>Participants</TitleContainer>
-        <Input placeholder="Optional" maxLength="50" />
+        <Input placeholder="Press Enter" maxLength="50" value={participants} onChange={handleParticipantsInput} onKeyDown={handleEnter}/>
+        <Participants>
+          {participantList.map((item, index) => <Participant key={index} index={index} name={item} deleteParticipant={deleteParticipant}></Participant>)}
+        </Participants>
         <ButtonContainer>
           <Button disabled={description.length > 0 ? null : 'disabled'} onClick={submit}>Save</Button>
           <Button onClick={openAddCardModal}>Cancle</Button>

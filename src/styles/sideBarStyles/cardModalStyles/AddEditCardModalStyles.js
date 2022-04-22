@@ -16,7 +16,7 @@ export const ModalBackground = styled.div`
 
 export const ModalContainer = styled.div`
   background-color: white;
-  width: 100%auto;
+  width: 25%;
   border-radius: 15px;
   padding: 3rem 3rem 1rem 3rem;
 
@@ -84,4 +84,9 @@ export const TimePicker = styled.input`
   margin: 0.2rem;
   border-radius: 10px;
   background-color: lightcoral;
+`;
+
+export const Participants = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;
