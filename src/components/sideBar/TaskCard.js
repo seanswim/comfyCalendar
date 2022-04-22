@@ -43,7 +43,7 @@ const TaskCard = ({ data }) => {
         <Title>Location</Title>
         <Content>{data.location? data.location : '-'}</Content>
         <Title>Participants</Title>
-        <Content>palisadias park</Content>
+        <Content>{data.participants.map((item, index) => <span key={index}>{`• ${item} `}</span>)}</Content>
       </TaskCardWrapper>
       <MenuContainer onClick={clickHandler}>
         <FaEllipsisV size={20}/>
