@@ -2,16 +2,24 @@ import { Content, CreatedBy, MenuContainer, TaskCardContainer, TaskCardWrapper, 
 import { FaEllipsisV } from "react-icons/fa";
 import { useState } from "react";
 import Menu from "./cardModal/Menu";
+import AddEditCardModal from "./cardModal/AddEditCardModal";
 
 const TaskCard = ({ data }) => {
 
   const startDate = new Date(data.startDate.seconds*1000).toISOString().substring(0, 10);
   const endDate = new Date(data.endDate.seconds*1000).toISOString().substring(0, 10);
   const [openMenu, setOpenMenu] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   //Open&Close menu component
   const clickHandler = (event) => {
     setOpenMenu(!openMenu);
+    if (event) event.stopPropagation();
+  }
+
+  //Open edit modal
+  const editModal = (event) => {
+    setOpenModal(!openModal)
     if (event) event.stopPropagation();
   }
 
@@ -39,8 +47,9 @@ const TaskCard = ({ data }) => {
       </TaskCardWrapper>
       <MenuContainer onClick={clickHandler}>
         <FaEllipsisV size={20}/>
-        {openMenu ? <Menu closeModal={clickHandler} data={data}/> : null}
+        {openMenu ? <Menu opendEditModal={editModal} closeModal={clickHandler} data={data}/> : null}
       </MenuContainer>
+        {openModal ? <AddEditCardModal openAddCardModal={editModal} data={data} action='edit'/> : null}
     </TaskCardContainer>
   )
 } 
