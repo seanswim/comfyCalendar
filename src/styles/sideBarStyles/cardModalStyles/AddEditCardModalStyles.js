@@ -22,6 +22,10 @@ export const ModalContainer = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  @media only screen and (max-width: 800px) {
+    width: 50%;
+  }
 `;
 
 

@@ -4,13 +4,16 @@ export const CalendarContainer = styled.div`
   display: flex;
   text-align: center;
   flex-direction: column;
+  flex: 4 1 0;
 
   background-color: white;
   border-radius: 15px;
   margin: 1rem;
   box-shadow: 2px 2px 5px grey;
 
-  width: 60%;
+  @media only screen and (max-width: 800px) {
+    width: 94%;
+  }
 `;
 
 export const MonthYearContainer = styled.div`

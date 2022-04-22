@@ -2,7 +2,7 @@ import { Input, ModalBackground, ModalContainer, TitleContainer, ButtonContainer
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { doc, collection, setDoc, query, where, getDocs } from "firebase/firestore";
-import { db, auth } from "../../../firebase";
+import { db } from "../../../firebase";
 import { setLastUpdate } from "../../../redux/Slice";
 import Participant from "./participant/Participant";
 
