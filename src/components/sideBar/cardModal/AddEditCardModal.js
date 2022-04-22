@@ -74,9 +74,7 @@ const AddEditCardModal = ({openAddCardModal, data, action}) => {
 
   //Submit
   const submit = async () => {
-    const newPlan = doc(collection(db, `users/${states.user.id}/plans`));
-    const data = {
-      id: newPlan.id,
+    const obj = {
       description: description,
       startDate: new Date(startDate),
       startMonth: new Date(startDate.slice(0,-3)),
@@ -89,7 +87,18 @@ const AddEditCardModal = ({openAddCardModal, data, action}) => {
       updatedAt: new Date(),
       createdAt: new Date(),
     }
-    await setDoc(newPlan, data);
+
+    if (action === 'add') {
+      const newPlan = doc(collection(db, `users/${states.user.id}/plans`));
+      obj.id = newPlan.id;
+      await setDoc(newPlan, obj);
+    }
+
+    if (action === 'edit') {
+      const editingPlan = doc(db, `users/${states.user.id}/plans/${data.id}`);
+      obj.id = data.id;
+      await setDoc(editingPlan, obj);
+    }
     dispatch(setLastUpdate(new Date()));
     openAddCardModal();
   }
