@@ -1,6 +1,6 @@
 import { SideBarContainer, SideBarWrapper, SideBarText, SideBarDay, AddCardButton } from "../../styles/sideBarStyles/SideBarStyles";
 import AddCard from "./AddCard";
-import AddCardModal from "./addCardModal/AddCardModal";
+import AddEditCardModal from "./cardModal/AddEditCardModal";
 import TaskCard from "./TaskCard";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -30,7 +30,7 @@ const SideBar = () => {
         <SideBarDay>{`${targetMonth}.${targetDay}`}</SideBarDay>
         {todoList.map((item, index) => <TaskCard key={index} data={item}/>)}
         <AddCardButton onClick={openAddCardModal}><AddCard/></AddCardButton>
-        {openCardModal ? <AddCardModal openAddCardModal={openAddCardModal}/> : null}
+        {openCardModal ? <AddEditCardModal openAddCardModal={openAddCardModal} action='add'/> : null}
       </SideBarWrapper>
     </SideBarContainer>
   )
