@@ -13,4 +13,8 @@ export const Body = styled.div`
   align-items: flex-start;
   flex-wrap: wrap;
   justify-content: center;
+
+  @media only screen and (max-width: 800px) {
+    flex-direction: column-reverse;
+  }
 `;

@@ -5,8 +5,8 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { doc, getDoc, getDocs, collection, query, where } from "firebase/firestore";
-import { db, auth } from "../../firebase";
+import { getDocs, collection } from "firebase/firestore";
+import { db } from "../../firebase";
 import { setPlans } from "../../redux/Slice";
 import { setTargetDate } from "../../redux/Slice";
 
