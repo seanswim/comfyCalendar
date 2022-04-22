@@ -1,20 +1,45 @@
-import { Input, ModalBackground, ModalContainer, TitleContainer, ButtonContainer, Button, StartAt, EndAt, DayPicker, TimePicker } from "../../../styles/sideBarStyles/addCardModalStyles/AddCardModalStyles";
+import { Input, ModalBackground, ModalContainer, TitleContainer, ButtonContainer, Button, StartAt, EndAt, DayPicker, TimePicker } from "../../../styles/sideBarStyles/cardModalStyles/AddEditCardModalStyles";
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { doc, collection, setDoc } from "firebase/firestore";
 import { db, auth } from "../../../firebase";
 import { setLastUpdate } from "../../../redux/Slice";
 
-const AddCardModal = ({openAddCardModal}) => {
+const AddEditCardModal = ({openAddCardModal, data, action}) => {
 
   const states = useSelector((state) => state.reducer.states);
   const dispatch = useDispatch();
-  const [startDate, setSatrtMonth] = useState(states.targetDate.replaceAll(' ', '-'));
-  const [startTime, setSatrtTime] = useState("00:00");
-  const [endDate, setEndDate] = useState(states.targetDate.replaceAll(' ', '-'));
-  const [endTime, setEndTime] = useState("00:00");
-  const [location, setLocation] = useState('');
-  const [description, setDescription] = useState('');
+
+  let startDateInit;
+  let startTimeInit;
+  let endDateInit;
+  let endTimeInit;
+  let locationInit;
+  let descriptionInit;
+
+  if (action === 'add') {
+    startDateInit = states.targetDate.replaceAll(' ', '-');
+    startTimeInit = "00:00";
+    endDateInit = states.targetDate.replaceAll(' ', '-');
+    endTimeInit = "00:00";
+    locationInit = '';
+    descriptionInit = '';
+  }
+  if (action === 'edit') {
+    startDateInit = new Date(data.startDate.seconds*1000).toISOString().substring(0, 10);
+    startTimeInit = data.startTime;
+    endDateInit = new Date(data.endDate.seconds*1000).toISOString().substring(0, 10);
+    endTimeInit = data.endTime;
+    locationInit = data.location;
+    descriptionInit = data.description;
+  }
+
+  const [startDate, setSatrtMonth] = useState(startDateInit);
+  const [startTime, setSatrtTime] = useState(startTimeInit);
+  const [endDate, setEndDate] = useState(endDateInit);
+  const [endTime, setEndTime] = useState(endTimeInit);
+  const [location, setLocation] = useState(locationInit);
+  const [description, setDescription] = useState(descriptionInit);
   const [participants, setParticipants] = useState([null]);
 
   //Outside click detecting
@@ -97,4 +122,4 @@ const AddCardModal = ({openAddCardModal}) => {
   )
 }
 
-export default AddCardModal;
+export default AddEditCardModal;

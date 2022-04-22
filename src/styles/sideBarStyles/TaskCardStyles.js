@@ -35,6 +35,7 @@ export const MenuContainer = styled.div`
 export const DateAndTimeContainer = styled.div`
   display: flex;
   text-align: center;
+  flex-wrap: wrap;
   span {
     margin: 0 1rem;
     display: flex;

@@ -8,7 +8,12 @@ export const DateCellContainer = styled.span`
   margin: 1rem;
   opacity: ${props => props.isThisMonth ? '1' : '0.5'};
   border: ${props => props.isTarget ? '1px solid black' : '1px solid white'};
+  
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   overflow: hidden;
+
   cursor: ${props => props.isThisMonth ? 'pointer' : ''};
   transition: all 0.4s ease-in-out;  
   :hover {
